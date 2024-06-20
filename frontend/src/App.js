@@ -39,7 +39,7 @@ import UsersList from "./component/Admin/UsersList.js";
 import UpdateUser from "./component/Admin/UpdateUser.js";
 import ProductReviews from "./component/Admin/ProductReviews.js";
 import Loader2 from "./component/layout/Loader/Loader2.js";
-
+import Navbar from "./component/layout/Header/Navbar.js";
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -74,8 +74,8 @@ function App() {
 
   return (
     <Router>
-      <Header />
-      {isAuthenticated && <UserOptions user={user} />}
+      <Navbar />
+      {/* {isAuthenticated && <UserOptions user={user} />} */}
       <Routes>
         <Route exact path="/" Component={Home} />
         <Route exact path="/loader" Component={Loader2} />
