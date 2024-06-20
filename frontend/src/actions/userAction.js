@@ -84,18 +84,22 @@ export const clearErrors = () => async (dispatch) => {
 export const loadUser = () => async (dispatch) => {
   try {
     dispatch({ type: LOAD_USER_REQUEST });
-
-    const { data } = await axios.get(
-      `http://localhost:4000/api/v1/me`,
-      {
-        withCredentials: true,
-      }
-    );
+    const token = localStorage.getItem("token");
+    const { data } = await axios.get(`http://localhost:4000/api/v1/me`, {
+      headers: {
+        Authorization: `${token}`,
+      },
+      withCredentials: true,
+    });
 
     dispatch({ type: LOAD_USER_SUCCESS, payload: data.user });
   } catch (error) {
-    console.log(error);
-    dispatch({ type: LOAD_USER_FAIL, payload: error.response.data.message });
+    console.log(error.response);
+    if (error.response && error.response.status === 401) {
+      dispatch({ type: LOAD_USER_FAIL, payload: "User not logged in" });
+    } else {
+      dispatch({ type: LOAD_USER_FAIL, payload: error.response.data.message });
+    }
   }
 };
 export const logout = () => async (dispatch) => {
@@ -110,12 +114,49 @@ export const logout = () => async (dispatch) => {
 export const updateProfile = (userData) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_PROFILE_REQUEST });
-
-    const config = { headers: { "Content-Type": "multipart/form-data" } };
-
+    const token = localStorage.getItem("token");
+    console.log(userData);
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+      withCredentials: true,
+    };
     const { data } = await axios.put(
       `http://127.0.0.1:4000/api/v1/me/update`,
       userData,
+      config
+    );
+
+    dispatch({ type: UPDATE_PROFILE_SUCCESS, payload: data.success });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_PROFILE_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+export const updateAvatar = (avatar) => async (dispatch) => {
+  try {
+    dispatch({ type: UPDATE_PROFILE_REQUEST });
+
+    const token = localStorage.getItem("token");
+
+    const formData = new FormData();
+    formData.append("avatar", avatar);
+
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `${token}`,
+      },
+      withCredentials: true,
+    };
+
+    const { data } = await axios.put(
+      `http://127.0.0.1:4000/api/v1/me/update/avatar`,
+      formData,
       config
     );
 

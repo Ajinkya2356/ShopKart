@@ -3,9 +3,9 @@ const nodeMailer = require("nodemailer");
 const sendEmail = async (options) => {
   try {
     const transporter = nodeMailer.createTransport({
-      host:"smtp.gmail.com",
-      port:465,
-      service:process.env.SMPT_SERVICE,
+      host: "smtp.gmail.com",
+      port: 465,
+      service: process.env.SMPT_SERVICE,
       auth: {
         user: process.env.SMPT_MAIL,
         pass: process.env.SMPT_PASSWORD,
@@ -23,7 +23,6 @@ const sendEmail = async (options) => {
     console.log("Email sent successfully");
   } catch (error) {
     console.error("Error occurred while sending email:", error);
-    // Handle the error as needed, log or throw the error further.
   }
 };
 

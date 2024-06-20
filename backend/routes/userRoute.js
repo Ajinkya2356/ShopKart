@@ -12,6 +12,7 @@ const {
   getSingleUser,
   updateUserRole,
   deleteUser,
+  updateUserAvatar,
 } = require("../controllers/userController");
 const sendEmail = require("../utils/sendEmail");
 const { isAuthenticatedUser, authorizedRoles } = require("../middleWare/auth");
@@ -26,6 +27,9 @@ router.route("/logout").get(logout);
 router.route("/me").get(isAuthenticatedUser, getUserDetails);
 router.route("/password/update").put(isAuthenticatedUser, updatePassword);
 router.route("/me/update").put(isAuthenticatedUser, updateUserProfile);
+router
+  .route("/me/update/avatar")
+  .put(upload.single("avatar"), isAuthenticatedUser, updateUserAvatar);
 router
   .route("/admin/users")
   .get(isAuthenticatedUser, authorizedRoles("admin"), getAllUsers);

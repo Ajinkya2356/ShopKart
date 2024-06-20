@@ -60,8 +60,10 @@ function App() {
         families: ["Roboto", "Droid Sans", "Chilanka"],
       },
     });
-    store.dispatch(loadUser());
-    getStripeApiKey();
+    if (localStorage.getItem("token")) {
+      store.dispatch(loadUser());
+      getStripeApiKey();
+    }
     store.dispatch(clearErrors());
   }, []);
 

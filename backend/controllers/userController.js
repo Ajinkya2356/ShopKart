@@ -5,6 +5,7 @@ const sendToken = require("../utils/jwtToken");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary");
+const jwt = require("jsonwebtoken");
 // register user
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
   const result = await cloudinary.v2.uploader.upload(
@@ -26,6 +27,11 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     },
   });
   sendToken(user, 201, res);
+  sendEmail({
+    email: user.email,
+    subject: "E-commerce Password Recovery",
+    message: `Welcome to E-commerce. We are happy to have you as our customer.`,
+  });
 });
 
 // Login User
@@ -117,7 +123,12 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 });
 // Get user details
 exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
-  const user = await User.findById(req.user.id);
+  const userId =
+    req.user.id || jwt.decode(req.headers, process.env.JWT_SECRET).id;
+  const user = await User.findById(userId);
+  if (!user) {
+    return next(new ErrorHandler("User not found", 401));
+  }
   res.status(200).json({
     success: true,
     user,
@@ -147,34 +158,55 @@ exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
 
 // Update User profile/details
 exports.updateUserProfile = catchAsyncErrors(async (req, res, next) => {
-  const newUserData = {
-    name: req.body.name,
-    email: req.body.email,
-  };
-  if (req.body.avatar !== "") {
+  try {
+    const newUserData = {
+      name: req.body.name,
+      email: req.body.email,
+    };
+    await User.findByIdAndUpdate(req.user.id, newUserData, {
+      new: true,
+    });
+    res.status(200).json({
+      success: true,
+    });
+  } catch (error) {
+    throw new ErrorHandler("Something went wrong", 404);
+  }
+});
+
+exports.updateUserAvatar = catchAsyncErrors(async (req, res) => {
+  try {
     const user = await User.findById(req.user.id);
-    const imageId = user.avatar.public_id;
-    await cloudinary.v2.uploader.destroy(imageId);
-    const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+    const image_id = user.avatar.public_id;
+    await cloudinary.v2.uploader.destroy(image_id);
+    const image = `data:${req.file.mimetype};base64,${req.file.buffer.toString(
+      "base64"
+    )}`;
+    const result = await cloudinary.v2.uploader.upload(image, {
       folder: "avatars",
       width: 150,
       crop: "scale",
     });
-    newUserData.avatar = {
-      public_id: myCloud.public_id,
-      url: myCloud.secure_url,
+    const userData = {
+      avatar: {
+        public_id: result.public_id,
+        url: result.secure_url,
+      },
     };
+    await User.findByIdAndUpdate(req.user.id, userData, {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    });
+    res.status(200).json({
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    throw new ErrorHandler("Something went wrong while updating avatar", 401);
   }
-
-  const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
-    new: true,
-    runValidators: true,
-    useFindAndModify: false,
-  });
-  res.status(200).json({
-    success: true,
-  });
 });
+
 // Get all users (admin)
 exports.getAllUsers = catchAsyncErrors(async (req, res, next) => {
   const users = await User.find();
