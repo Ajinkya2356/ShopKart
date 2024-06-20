@@ -47,7 +47,12 @@ function App() {
   async function getStripeApiKey() {
     try {
       const { data } = await axios.get(
-        "http://127.0.0.1:4000/api/v1/stripeapikey"
+        "http://127.0.0.1:4000/api/v1/stripeapikey",
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
       );
       setStripeApiKey(data.stripeApiKey);
     } catch (error) {

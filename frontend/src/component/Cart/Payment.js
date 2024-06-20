@@ -21,7 +21,7 @@ import { createOrder, clearErrors } from "../../actions/orderAction";
 import { useNavigate } from "react-router-dom";
 const Payment = () => {
   const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
-const history=useNavigate()
+  const history = useNavigate();
   const dispatch = useDispatch();
   const alert = useAlert();
   const stripe = useStripe();
@@ -54,10 +54,11 @@ const history=useNavigate()
       const config = {
         headers: {
           "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
         },
       };
       const { data } = await axios.post(
-        "/api/v1/payment/process",
+        "http://localhost:4000/api/v1/payment/process",
         paymentData,
         config
       );

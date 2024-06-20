@@ -29,6 +29,18 @@ import {
   DELETE_REVIEW_FAIL,
   CLEAR_ERRORS,
 } from "../constants/productConstants";
+import { BASE_URL } from "../constants/api";
+const authorizationHeader = {
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: localStorage.getItem("token"),
+  },
+};
+const defaultHeader = {
+  headers: {
+    "Content-Type": "application/json",
+  },
+};
 export const getProduct = (
   keyword = "",
   currentPage = 1,
@@ -38,12 +50,12 @@ export const getProduct = (
 ) => async (dispatch) => {
   try {
     dispatch({ type: ALL_PRODUCT_REQUEST });
-    let link = `http://127.0.0.1:4000/api/v1/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`;
+    let link = `${BASE_URL}/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`;
 
     if (category) {
-      link = `http://127.0.0.1:4000/api/v1/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}&ratings[gte]=${ratings}`;
+      link = `${BASE_URL}/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}&ratings[gte]=${ratings}`;
     }
-    const { data } = await axios.get(link);
+    const { data } = await axios.get(link, defaultHeader);
     dispatch({
       type: ALL_PRODUCT_SUCCESS,
       payload: data,
@@ -63,7 +75,8 @@ export const getProductDetails = (id) => async (dispatch) => {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
 
     const { data } = await axios.get(
-      `http://127.0.0.1:4000/api/v1/product/${id}`
+      `${BASE_URL}/product/${id}`,
+      defaultHeader
     );
 
     dispatch({
@@ -80,18 +93,10 @@ export const getProductDetails = (id) => async (dispatch) => {
 export const newReview = (reviewData) => async (dispatch) => {
   try {
     dispatch({ type: NEW_REVIEW_REQUEST });
-    const token = localStorage.getItem("token");
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${token}`,
-      },
-    };
-
     const { data } = await axios.put(
-      `http://127.0.0.1:4000/api/v1/review`,
+      `${BASE_URL}/review`,
       reviewData,
-      config
+      authorizationHeader
     );
 
     dispatch({
@@ -108,9 +113,9 @@ export const newReview = (reviewData) => async (dispatch) => {
 export const getAdminProduct = () => async (dispatch) => {
   try {
     dispatch({ type: ADMIN_PRODUCT_REQUEST });
-
     const { data } = await axios.get(
-      "http://127.0.0.1:4000/api/v1/admin/products"
+      `${BASE_URL}/admin/products`,
+      authorizationHeader
     );
 
     dispatch({
@@ -127,15 +132,10 @@ export const getAdminProduct = () => async (dispatch) => {
 export const updateProduct = (id, productData) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_PRODUCT_REQUEST });
-
-    const config = {
-      headers: { "Content-Type": "application/json" },
-    };
-
     const { data } = await axios.put(
-      `http://127.0.0.1:4000/api/v1/admin/product/${id}`,
+      `${BASE_URL}/admin/product/${id}`,
       productData,
-      config
+      authorizationHeader
     );
 
     dispatch({
@@ -156,7 +156,8 @@ export const deleteProduct = (id) => async (dispatch) => {
     dispatch({ type: DELETE_PRODUCT_REQUEST });
 
     const { data } = await axios.delete(
-      `http://127.0.0.1:4000/api/v1/admin/product/${id}`
+      `${BASE_URL}/admin/product/${id}`,
+      authorizationHeader
     );
 
     dispatch({
@@ -173,15 +174,10 @@ export const deleteProduct = (id) => async (dispatch) => {
 export const createProduct = (productData) => async (dispatch) => {
   try {
     dispatch({ type: NEW_PRODUCT_REQUEST });
-
-    const config = {
-      headers: { "Content-Type": "application/json" },
-    };
-
     const { data } = await axios.post(
-      `http://127.0.0.1:4000/api/v1/admin/product/new`,
+      `${BASE_URL}/admin/product/new`,
       productData,
-      config
+      authorizationHeader
     );
 
     dispatch({
@@ -200,7 +196,8 @@ export const getAllReviews = (id) => async (dispatch) => {
     dispatch({ type: ALL_REVIEW_REQUEST });
 
     const { data } = await axios.get(
-      `http://127.0.0.1:4000/api/v1/reviews?id=${id}`
+      `${BASE_URL}/reviews?id=${id}`,
+      authorizationHeader
     );
 
     dispatch({
@@ -219,7 +216,8 @@ export const deleteReviews = (reviewId, productId) => async (dispatch) => {
     dispatch({ type: DELETE_REVIEW_REQUEST });
 
     const { data } = await axios.delete(
-      `http://127.0.0.1:4000/api/v1/reviews?id=${reviewId}&productId=${productId}`
+      `${BASE_URL}/reviews?id=${reviewId}&productId=${productId}`,
+      authorizationHeader
     );
 
     dispatch({
