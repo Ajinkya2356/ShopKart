@@ -1,0 +1,25 @@
+.stripe {
+  border: "1px solid white";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  background-color: rgb(20, 142, 223);
+  padding: 20px;
+  transform: rotate(3deg);
+  overflow: hidden;
+  z-index: 2;
+}
+.stripe2{
+  border: "1px solid white";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  background-color: rgb(223, 64, 20);
+  padding: 20px;
+  transform: rotate(-4deg);
+  overflow: hidden;
+  margin-top: -40px;
+  z-index:1;
+}

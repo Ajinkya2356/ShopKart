@@ -107,7 +107,7 @@ function Shoe() {
   return (
     <group
       ref={ref}
-      scale={1.8}
+      scale={1.6}
       onPointerOver={(e) => (e.stopPropagation(), set(e.object.material.name))}
       onPointerOut={(e) => e.intersections.length === 0 && set(null)}
       onPointerMissed={() => (state.current = null)}

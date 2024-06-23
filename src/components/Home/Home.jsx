@@ -8,10 +8,11 @@ import {
   MainText2,
   MainText3,
 } from "../../constants/constants";
-import Show from "../Show";
 import { Rating } from "@mui/material";
 import Sneaker from "../Sneaker";
 import SneakerModel from "../3D/SneakerModel";
+import Stripes from "./Stripes";
+import Brand from "./Brand";
 const Home = () => {
   return (
     <>
@@ -62,10 +63,11 @@ const Home = () => {
             <Sneaker />
             <Sneaker />
           </Box>
-          
         </Box>
         <SneakerModel />
       </Box>
+      <Stripes />
+      <Brand/>
     </>
   );
 };
