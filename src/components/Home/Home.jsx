@@ -13,6 +13,9 @@ import Sneaker from "../Sneaker";
 import SneakerModel from "../3D/SneakerModel";
 import Stripes from "./Stripes";
 import Brand from "./Brand";
+import Seller from "./Seller";
+import Section from "./Section";
+import LastSections from "./LastSections";
 const Home = () => {
   return (
     <>
@@ -68,6 +71,9 @@ const Home = () => {
       </Box>
       <Stripes />
       <Brand/>
+      <Seller/>
+      <Section/>
+      <LastSections/>
     </>
   );
 };
