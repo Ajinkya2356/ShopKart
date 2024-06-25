@@ -20,6 +20,7 @@ const Home = () => {
   return (
     <>
       <Box className={styles.container}>
+        <SneakerModel />
         <Box className={styles.row}>
           <Typography
             variant="h3"
@@ -67,13 +68,12 @@ const Home = () => {
             <Sneaker />
           </Box>
         </Box>
-        <SneakerModel />
       </Box>
       <Stripes />
-      <Brand/>
-      <Seller/>
-      <Section/>
-      <LastSections/>
+      <Brand />
+      <Seller />
+      <Section />
+      <LastSections />
     </>
   );
 };

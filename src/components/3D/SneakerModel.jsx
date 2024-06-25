@@ -177,7 +177,7 @@ function Shoe() {
 
 function Picker() {
   const snap = useSnapshot(state);
-  const colors = ["#ff0000", "#00ff00", "#0000ff", "#ffff00"];
+  const colors = ["#ffa500", "#0000ff", "#ff69b4", "#00ffff", "#ff033e"];
   const [selectedColor, setSelectedColor] = useState("#ff0000");
   return (
     <div>

@@ -15,13 +15,19 @@ import logo from "../../assets/logo.jpg";
 import { BrandName } from "../../constants/constants";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-const pages = ["Home", "Sneakers", "Cart", "Wishlist"];
+import { Drawer } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+const pages = ["Home", "Sneakers", "Customize", "Forums"];
 const settings = ["Dashboard", "Profile", "Logout"];
-
+const linkMap = {
+  Home: "/",
+  Sneakers: "/sneakers",
+};
 function Navbar() {
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -36,7 +42,15 @@ function Navbar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
+  const toggleDrawer = (open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+    setDrawerOpen(open);
+  };
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -125,54 +139,72 @@ function Navbar() {
           >
             {BrandName}
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex", justifyContent: "center" },
+            }}
+          >
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={() => {
+                  handleCloseNavMenu();
+                  navigate(linkMap[page] || "/");
+                }}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page == "Cart" || page == "Wishlist" ? (
-                  page == "Cart" ? (
-                    <LocalMallIcon />
-                  ) : (
-                    <FavoriteIcon />
-                  )
-                ) : (
-                  page
-                )}
+                {page}
               </Button>
             ))}
           </Box>
-
+          <Box
+            sx={{
+              display: { xs: "none", md: "flex" },
+              justifyContent: "flex-end",
+              gap: "5px",
+              marginRight: "10px",
+            }}
+          >
+            <IconButton color="inherit">
+              <LocalMallIcon />
+            </IconButton>
+            <IconButton color="inherit">
+              <FavoriteIcon />
+            </IconButton>
+          </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="User" src="/static/images/avatar/2.jpg" />
+                <Avatar
+                  alt="User"
+                  src="/static/images/avatar/2.jpg"
+                  onClick={toggleDrawer(true)}
+                />
               </IconButton>
             </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
+            {/* <Drawer
+              anchor="right"
+              open={drawerOpen}
+              onClose={toggleDrawer(false)}
+              ModalProps={{
+                keepMounted: true,
+                style: { zIndex: 1300 },
               }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+              <Box
+                sx={{ width: 250 }}
+                role="presentation"
+                onClick={toggleDrawer(false)}
+                onKeyDown={toggleDrawer(false)}
+              >
+                {settings.map((setting) => (
+                  <MenuItem key={setting} onClick={toggleDrawer(false)}>
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                ))}
+              </Box>
+            </Drawer> */}
           </Box>
         </Toolbar>
       </Container>
