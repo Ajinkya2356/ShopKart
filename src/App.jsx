@@ -11,6 +11,7 @@ import ForgotPassword from "./components/User/ForgotPassword";
 import ResetPassword from "./components/User/ResetPassword";
 import Cart from "./components/User/Cart";
 import Wishlist from "./components/User/Wishlist";
+import Forum from "./components/Features/Forum";
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
@@ -33,6 +34,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/forums" element={<Forum />} />
         </Routes>
       </Router>
     </ThemeProvider>
