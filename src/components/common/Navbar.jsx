@@ -88,7 +88,13 @@ function Navbar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem
+                  key={page}
+                  onClick={() => {
+                    handleCloseNavMenu();
+                    navigate(linkMap[page] || "/");
+                  }}
+                >
                   {page == "Cart" || page == "Wishlist" ? (
                     page == "Cart" ? (
                       <LocalMallIcon />
@@ -149,17 +155,17 @@ function Navbar() {
               marginRight: "10px",
             }}
           >
-            <IconButton color="inherit">
+            <IconButton color="inherit" onClick={() => navigate("/cart")}>
               <LocalMallIcon />
             </IconButton>
-            <IconButton color="inherit">
+            <IconButton color="inherit" onClick={() => navigate("/wishlist")}>
               <FavoriteIcon />
             </IconButton>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <IconButton
               onClick={() => {
-                window.location.href="/profile";
+                window.location.href = "/profile";
               }}
               sx={{ p: 0 }}
             >

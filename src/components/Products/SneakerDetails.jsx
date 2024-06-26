@@ -171,9 +171,7 @@ const SneakerDetails = () => {
             <FavoriteIcon />
           </IconButton>
         </Box>
-        <Box>
-          <FormDialog />
-        </Box>
+        
       </Box>
     </Box>
   );

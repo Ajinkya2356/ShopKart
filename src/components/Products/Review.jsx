@@ -6,8 +6,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Rating } from "@mui/material";
-
+import { IconButton, Rating } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 export default function FormDialog() {
   const [open, setOpen] = React.useState(false);
 
@@ -21,9 +21,12 @@ export default function FormDialog() {
 
   return (
     <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Submit Review
-      </Button>
+      <IconButton
+        onClick={handleClickOpen}
+        style={{ border: "2px solid gray" }}
+      >
+        <AddIcon />
+      </IconButton>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -51,7 +54,9 @@ export default function FormDialog() {
             label="Your Review"
             type="email"
             fullWidth
-            variant="standard"
+            variant="outlined"
+            multiline
+            rows={4}
           />
         </DialogContent>
         <DialogActions>

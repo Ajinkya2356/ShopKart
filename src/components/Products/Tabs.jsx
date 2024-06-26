@@ -4,7 +4,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { Avatar, Rating, Typography } from "@mui/material";
-
+import FormDialog from "./Review";
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -61,27 +61,37 @@ export default function BasicTabs() {
         dolores voluptas, sequi natus quidem.
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <Box
-          style={{
-            display: "flex",
-            gap: "10px",
-          }}
-        >
-          <Avatar />
+        <Box>
           <Box
             style={{
-              display: "inherit",
-              flexDirection: "column",
-              gap: "5px",
+              display: "flex",
+              justifyContent: "flex-end",
             }}
           >
-            <Rating value={5} />
-            <Typography>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Quibusdam, voluptatum.
-            </Typography>
-            <Typography>Username</Typography>
-            <Typography variant="body2">Date</Typography>
+            <FormDialog />
+          </Box>
+          <Box
+            style={{
+              display: "flex",
+              gap: "10px",
+            }}
+          >
+            <Avatar />
+            <Box
+              style={{
+                display: "inherit",
+                flexDirection: "column",
+                gap: "5px",
+              }}
+            >
+              <Rating value={5} />
+              <Typography>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Quibusdam, voluptatum.
+              </Typography>
+              <Typography>Username</Typography>
+              <Typography variant="body2">Date</Typography>
+            </Box>
           </Box>
         </Box>
       </CustomTabPanel>

@@ -8,6 +8,9 @@ import SneakerDetails from "./components/Products/SneakerDetails";
 import Profile from "./components/User/Profile";
 import Login from "./components/User/Login";
 import ForgotPassword from "./components/User/ForgotPassword";
+import ResetPassword from "./components/User/ResetPassword";
+import Cart from "./components/User/Cart";
+import Wishlist from "./components/User/Wishlist";
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
@@ -23,10 +26,13 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/forgot-password" element={<ForgotPassword />}></Route>
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/login" element={<Login />} />
           <Route path="/sneakers" element={<Product />} />
           <Route path="/sneaker" element={<SneakerDetails />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/wishlist" element={<Wishlist />} />
         </Routes>
       </Router>
     </ThemeProvider>
