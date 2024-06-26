@@ -1,7 +1,5 @@
 import React, { Fragment, useEffect } from "react";
-import Banner from "../../images/banner.jpg";
 import "./Home.css";
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Apple from "../../images/apple.png";
@@ -17,13 +15,19 @@ import { getProduct } from "../../actions/productAction";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../layout/Loader/Loader";
 import { clearErrors } from "../../actions/productAction";
-import Loader2 from "../layout/Loader/Loader2";
+import banner from "../../images/banner.png";
+import { Button, Box, Typography } from "@mui/material";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from "react-responsive-carousel";
+import sneaker from "../../images/sneaker2.png";
+import sneaker_2 from "../../images/sneaker3.png";
+import sneaker_3 from "../../images/sneaker4.png";
 const Home = () => {
   const dispatch = useDispatch();
-  const { loading, error, products } = useSelector(
-    (state) => state.products
-  );
-  const firstEightProducts = Array.isArray(products) ? products.slice(0, 8) : [];
+  const { loading, error, products } = useSelector((state) => state.products);
+  const firstEightProducts = Array.isArray(products)
+    ? products.slice(0, 8)
+    : [];
   useEffect(() => {
     if (error) {
       alert.error(error);
@@ -31,15 +35,7 @@ const Home = () => {
     }
     dispatch(getProduct());
   }, [dispatch, error, alert]);
-
-  const settings = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: window.innerWidth < 1250 ? 2 : 4,
-    slidesToScroll: 1,
-    autoplay: true, // Enable auto-scroll
-    autoplaySpeed: 3000,
-  };
+  const images = [banner, sneaker, sneaker_2, sneaker_3];
   const brandImages = [Apple, Oneplus, pixel, samsung, vivo, boat, sony];
   return (
     <Fragment>
@@ -49,52 +45,64 @@ const Home = () => {
         <Fragment>
           <MetaData title="ShopCart" />
           <div className="container">
-            <div className="image-cont">
-              <img src={Banner} alt="" />
-              {/* <button>Shop Now</button> */}
-            </div>
-            <div className="brands">
-              <h1>Our Partners</h1>
-              <div className="outerbrand">
-                <Slider {...settings}>
-                  {brandImages.map((brand, index) => (
-                    <div key={index} className="brandImage">
-                      <img src={brand} alt={`Brand ${index + 1}`} />
-                    </div>
-                  ))}
-                </Slider>
-              </div>
-
-            </div>
-            <div className="sections">
-              <div className="sec" id="sec1">
-                <h1>
-                  20% Off
-                  <br /> On Latest Releases
-                </h1>
-                <p>
-                  Grab the latest releases with most affordable prices only at ShopCart.
-                </p>
-                <button>Shop Now</button>
-              </div>
-              <div className="sec" id="sec2">
-                <h1>Latest Tech-Tools Just For You</h1>
-                <p>
-                  One stop location for new electronics with diverse variants and with customization
-                </p>
-                <button>Shop Now</button>
-              </div>
-              <div className="sec" id="sec3">
-                <h1>
-                  Let's <br />
-                  Get Ready!
-                </h1>
-                <p>
-                  To explore the tech world and deep dive it into with ShopCart your tech partner
-                </p>
-                <button>Shop Now</button>
-              </div>
-            </div>
+            <Box className="banner">
+              <Box
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                }}
+              >
+                <Box className="container1">
+                  <Typography
+                    style={{
+                      fontFamily: "Orbitron",
+                      fontSize: "4rem",
+                      fontWeight: "800",
+                      color: "#333",
+                    }}
+                  >
+                    COMFORT & MAGIC AWAITS EVERYDAY
+                  </Typography>
+                  <Box
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "20px",
+                      marginTop: "30px",
+                    }}
+                  >
+                    <Button
+                      style={{
+                        backgroundColor: "#333",
+                        color: "#fff",
+                        fontSize: "1rem",
+                        fontWeight: "600",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Shop Now
+                    </Button>
+                    <Box>
+                      <Typography style={{ color: "black" }}>
+                        4.9 | <span>⭐⭐⭐⭐⭐</span>
+                      </Typography>
+                      <Typography style={{ color: "black" }}>
+                        Rated by 1000+ Customers
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box className="productCont">
+                    {products.slice(0, 3).map((product, index) => {
+                      return <Product key={index} product={product} />;
+                    })}
+                  </Box>
+                </Box>
+                <Box className="container2">
+                  
+                </Box>
+              </Box>
+            </Box>
             <div className="products1">
               <h1>Featured Products</h1>
               <div className="product2">

@@ -85,6 +85,7 @@ function ResponsiveAppBar() {
             sx={{
               fontFamily: "'Montserrat', sans-serif",
               ml: 2,
+              mr:2,
               display: { xs: "none", md: "flex" },
               fontWeight: 700,
               color: "black",
@@ -144,7 +145,7 @@ function ResponsiveAppBar() {
             component="a"
             href="/"
             sx={{
-              mr: 2,
+              mr:2,
               display: { xs: "flex", md: "none" },
               flexGrow: 1,
               fontFamily: "'Montserrat', sans-serif",

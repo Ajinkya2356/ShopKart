@@ -139,13 +139,13 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-position-y: 50%;
-  color:rgb(241, 237, 218);
+  color: rgb(241, 237, 218);
 }
-.banner > h1{
-  color:rgb(45, 180, 204);
+.banner > h1 {
+  color: rgb(45, 180, 204);
 }
-.banner > p{
-  font-size:22px;
+.banner > p {
+  font-size: 22px;
 }
 .banner button {
   border-radius: 10px;
@@ -178,14 +178,13 @@ body {
   box-sizing: border-box;
 }
 .productCard {
-  width: 14vmax;
+  width: 348px;
   display: flex;
   flex-direction: column;
   text-decoration: none;
   color: rgb(48, 48, 48);
   margin: 2vmax;
   transition: all 0.5s;
-  padding: 0.7vmax;
   background-color: rgb(236, 231, 231);
   border-radius: 8px;
 }
@@ -211,7 +210,7 @@ body {
   font-size: 1.2vmax;
   margin: 1vmax 0.5vmax;
   margin-bottom: 0;
-  font-weight:600;
+  font-weight: 600;
 }
 
 .productCard > span {
@@ -225,6 +224,32 @@ body {
   box-shadow: 0 0 5px rgba(15, 15, 15, 0.26);
 
   transform: translateY(-1vmax);
+}
+.banner {
+  /* border: 2px solid black; */
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 0;
+  gap: 10px;
+}
+.container1,
+.container2 {
+  /* border: 2px solid black; */
+  flex: 1 0 50%; /* flex-grow: 1, flex-shrink: 0, flex-basis: 50% */
+}
+.bannerImage {
+  height: fit-content;
+  width: fit-content;
+}
+.container2 {
+  border: 2px solid black;
+}
+.productCont {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
 }
 @media screen and (max-width: 600px) {
   .productCard > p {
@@ -251,7 +276,7 @@ body {
     width: 80%;
     height: 230px;
     padding: 6%;
-    margin-top:5%;
+    margin-top: 5%;
   }
   .sec h1 {
     margin-top: 5%;
