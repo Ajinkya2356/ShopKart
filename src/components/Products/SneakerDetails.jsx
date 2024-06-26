@@ -1,7 +1,14 @@
 import React from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
-import { Box, Button, IconButton, Rating, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  Rating,
+  TextField,
+  Typography,
+} from "@mui/material";
 import shoe from "../../../image/shoe.png";
 import Shoe1 from "../../../image/Shoe1.png";
 import BasicTabs from "./Tabs";
@@ -141,6 +148,14 @@ const SneakerDetails = () => {
             <Button variant="contained">12</Button>
           </Box>
         </Box>
+        <Typography
+          style={{
+            fontWeight: "bold",
+          }}
+        >
+          Stock 
+        </Typography>
+        <TextField type="number" />
         <Box
           style={{
             display: "flex",
@@ -157,7 +172,7 @@ const SneakerDetails = () => {
           </IconButton>
         </Box>
         <Box>
-            <FormDialog/>
+          <FormDialog />
         </Box>
       </Box>
     </Box>
