@@ -15,42 +15,25 @@ import logo from "../../assets/logo.jpg";
 import { BrandName } from "../../constants/constants";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { Drawer } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 const pages = ["Home", "Sneakers", "Customize", "Forums"];
-const settings = ["Dashboard", "Profile", "Logout"];
 const linkMap = {
   Home: "/",
   Sneakers: "/sneakers",
+  Customize: "/customize",
+  Forums: "/forums",
 };
 function Navbar() {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-  const toggleDrawer = (open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-    setDrawerOpen(open);
-  };
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -174,37 +157,14 @@ function Navbar() {
             </IconButton>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar
-                  alt="User"
-                  src="/static/images/avatar/2.jpg"
-                  onClick={toggleDrawer(true)}
-                />
-              </IconButton>
-            </Tooltip>
-            {/* <Drawer
-              anchor="right"
-              open={drawerOpen}
-              onClose={toggleDrawer(false)}
-              ModalProps={{
-                keepMounted: true,
-                style: { zIndex: 1300 },
+            <IconButton
+              onClick={() => {
+                window.location.href="/profile";
               }}
+              sx={{ p: 0 }}
             >
-              <Box
-                sx={{ width: 250 }}
-                role="presentation"
-                onClick={toggleDrawer(false)}
-                onKeyDown={toggleDrawer(false)}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={toggleDrawer(false)}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
-              </Box>
-            </Drawer> */}
+              <Avatar alt="User" src="/static/images/avatar/2.jpg" />
+            </IconButton>
           </Box>
         </Toolbar>
       </Container>
