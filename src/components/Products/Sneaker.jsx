@@ -1,15 +1,25 @@
 import { Box, IconButton, Typography } from "@mui/material";
 import React from "react";
-import styles from "../components/Home/home.module.css";
+import styles from "../Home/home.module.css";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { useNavigate } from "react-router-dom";
 const Sneaker = () => {
+  const navigate = useNavigate();
   return (
-    <Box className={styles.sneaker}>
+    <Box
+      className={styles.sneaker}
+      
+    >
       <Box
         style={{
           position: "relative",
-          height:"80%"
+          height: "80%",
+        }}
+        onClick={(e) => {
+          console.log("Clicked")
+          e.stopPropagation();
+          navigate("/sneaker");
         }}
       >
         <img

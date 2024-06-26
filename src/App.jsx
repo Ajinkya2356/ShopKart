@@ -4,6 +4,7 @@ import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home/Home";
 import Product from "./components/Products/Product";
+import SneakerDetails from "./components/Products/SneakerDetails";
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
@@ -19,6 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/sneakers" element={<Product />} />
+          <Route path="/sneaker" element={<SneakerDetails />} />
         </Routes>
       </Router>
     </ThemeProvider>

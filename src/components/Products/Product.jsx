@@ -3,13 +3,15 @@ import {
   Button,
   Checkbox,
   IconButton,
+  Radio,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import RangeSlider from "./TwoSlider";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import Sneaker from "../Sneaker";
+import Sneaker from "./Sneaker";
+import MultipleSelectChip from "./MultipleSelect";
 const Product = () => {
   const colors = [
     "#ffa500",
@@ -51,6 +53,7 @@ const Product = () => {
     brand: false,
     size: false,
     style: false,
+    "sort by": true,
   });
   const handleExpand = (type) => {
     setExpandable({
@@ -58,21 +61,13 @@ const Product = () => {
       [type]: !expandable[type],
     });
   };
+  const sortFilters = [
+    "Price: Low to High",
+    "Price: High to Low",
+    "Newest Arrivals",
+  ];
   return (
     <>
-      <Box
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center", 
-          padding: "20px",
-          paddingRight:"50px",
-          gap:"10px"
-        }}
-      >
-        <Button>Filters</Button>
-        <Button>Sort By</Button>
-      </Box>
       <Box
         style={{
           paddingTop: "20px",
@@ -96,7 +91,44 @@ const Product = () => {
             borderRadius: "20px",
           }}
         >
-          <Typography variant="p">SNEAKERS</Typography>
+          <Typography variant="h6">SNEAKERS</Typography>
+          <Box
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="p">SORT BY</Typography>
+            <IconButton onClick={() => handleExpand("sort by")}>
+              {expandable["sort by"] ? <RemoveIcon /> : <AddIcon />}
+            </IconButton>
+          </Box>
+          {expandable["sort by"] && (
+            <Box
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+              }}
+            >
+              {sortFilters.map((filter, index) => (
+                <Box
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Typography variant="p">{filter}</Typography>
+                  <Radio
+                    value="a"
+                    name="radio-buttons"
+                    inputProps={{ "aria-label": "A" }}
+                  />
+                </Box>
+              ))}
+            </Box>
+          )}
           <Box
             style={{
               display: "flex",
@@ -114,7 +146,7 @@ const Product = () => {
               style={{
                 display: "flex",
                 flexWrap: "wrap",
-                gap: "15px",
+                gap: "20px",
               }}
             >
               {colors.map((color, index) => (
@@ -162,31 +194,7 @@ const Product = () => {
               {expandable.brand ? <RemoveIcon /> : <AddIcon />}
             </IconButton>
           </Box>
-          {expandable.brand && (
-            <Box
-              style={{
-                marginTop: "10px",
-                maxHeight: "200px",
-                overflowY: "auto",
-                scrollbarWidth: "thin",
-                scrollbarColor: "#fff #333",
-              }}
-            >
-              {brands.map((brand, index) => {
-                return (
-                  <Box
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography variant="body2">{brand}</Typography>
-                    <Checkbox />
-                  </Box>
-                );
-              })}
-            </Box>
-          )}
+          {expandable.brand && <MultipleSelectChip names={brands} />}
           <Box
             style={{
               display: "flex",

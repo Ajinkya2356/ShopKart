@@ -9,7 +9,7 @@ import {
   MainText3,
 } from "../../constants/constants";
 import { Rating } from "@mui/material";
-import Sneaker from "../Sneaker";
+import Sneaker from "../Products/Sneaker";
 import SneakerModel from "../3D/SneakerModel";
 import Stripes from "./Stripes";
 import Brand from "./Brand";
