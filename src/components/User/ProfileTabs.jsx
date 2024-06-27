@@ -15,6 +15,11 @@ import {
   Typography,
 } from "@mui/material";
 import { PhotoCamera } from "@mui/icons-material";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 const recentActivities = [
   { description: "Logged in from a new device", date: "2023-04-01" },
   { description: "Updated profile picture", date: "2023-04-02" },
@@ -51,7 +56,15 @@ function a11yProps(index) {
 
 export default function ProfileTabs() {
   const [value, setValue] = React.useState(0);
+  const [open, setOpen] = React.useState(false);
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -198,8 +211,45 @@ export default function ProfileTabs() {
                 Your password is secure. Click here to change your password.
               </Typography>
             </Box>
-            <Button>Change Password</Button>
+            <Button onClick={handleClickOpen}>Change Password</Button>
           </Box>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              component: "form",
+              onSubmit: (event) => {
+                event.preventDefault();
+                const formData = new FormData(event.currentTarget);
+                const formJson = Object.fromEntries(formData.entries());
+                const email = formJson.email;
+                console.log(email);
+                handleClose();
+              },
+            }}
+          >
+            <DialogTitle>Change Password</DialogTitle>
+            <DialogContent>
+              {Array.from(["New Password", "Confirm Password"]).map(
+                (label, index) => (
+                  <TextField
+                    autoFocus
+                    required
+                    margin="dense"
+                    id="name"
+                    label={label}
+                    type="password"
+                    fullWidth
+                    variant="outlined"
+                  />
+                )
+              )}
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button type="submit">Submit</Button>
+            </DialogActions>
+          </Dialog>
           <Box
             style={{
               display: "inherit",
