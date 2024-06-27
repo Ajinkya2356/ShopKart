@@ -12,6 +12,10 @@ import ResetPassword from "./components/User/ResetPassword";
 import Cart from "./components/User/Cart";
 import Wishlist from "./components/User/Wishlist";
 import Forum from "./components/Features/Forum";
+import CustomizedSteppers from "./components/Payment/Checkout";
+import ShippingForm from "./components/Payment/ShippingForm";
+import ConfirmOrder from "./components/Payment/ConfirmOrder";
+import Payment from "./components/Payment/Payment";
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
@@ -35,6 +39,9 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/forums" element={<Forum />} />
+          <Route path="/checkout/shipping" element={<ShippingForm />} />
+          <Route path="/checkout/confirm" element={<ConfirmOrder />} />
+          <Route path="/checkout/payment" element={<Payment />} />
         </Routes>
       </Router>
     </ThemeProvider>
