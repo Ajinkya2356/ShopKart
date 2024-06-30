@@ -14,12 +14,21 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { PhotoCamera } from "@mui/icons-material";
+import { PhotoCamera, Visibility, VisibilityOff } from "@mui/icons-material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useDispatch, useSelector } from "react-redux";
+import WifiCalling3Icon from "@mui/icons-material/WifiCalling3";
+import HomeIcon from "@mui/icons-material/Home";
+import EmailIcon from "@mui/icons-material/Email";
+import {
+  changePassword,
+  updateUserAvatar,
+  updateUserProfile,
+} from "../../../Action/User/userAction";
 const recentActivities = [
   { description: "Logged in from a new device", date: "2023-04-01" },
   { description: "Updated profile picture", date: "2023-04-02" },
@@ -55,20 +64,41 @@ function a11yProps(index) {
 }
 
 export default function ProfileTabs() {
+  const dispatch = useDispatch();
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(false);
-
+  const { user, error } = useSelector((state) => state.user);
+  const [values, setValues] = React.useState(user);
+  const [passwords, setPasswords] = React.useState({});
+  const [show, setShow] = React.useState({
+    "Old Password": false,
+    "New Password": false,
+    "Confirm Password": false,
+  });
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
+    setPasswords({});
   };
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
+  const [avatar, setAvatar] = React.useState(user?.avatar?.url);
+  const [avatarPreview, setAvatarPreview] = React.useState(user?.avatar?.url);
+  const IconToLabelMap = {
+    Name: <AccountCircleIcon />,
+    Email: <EmailIcon />,
+    Address: <HomeIcon />,
+    "Mobile No": <WifiCalling3Icon />,
+  };
+  React.useEffect(() => {
+    if (user) {
+      setValues(user);
+      setAvatarPreview(user.avatar.url);
+    }
+  }, [user]);
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -98,6 +128,17 @@ export default function ProfileTabs() {
                 id="icon-button-file"
                 type="file"
                 style={{ display: "none" }}
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      setAvatar(reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                    setAvatarPreview(URL.createObjectURL(file));
+                  }
+                }}
               />
               <label htmlFor="icon-button-file">
                 <IconButton
@@ -114,34 +155,49 @@ export default function ProfileTabs() {
                         opacity: 0.7,
                       },
                     }}
-                    src="/static/images/avatar/1.jpg" // Placeholder, replace with dynamic src
+                    src={avatarPreview}
                   />
                   <PhotoCamera sx={{ position: "absolute", color: "white" }} />
                 </IconButton>
               </label>
             </Grid>
-            {["Name", "Username", "Address", "Mobile No"].map(
-              (label, index) => (
-                <Grid item xs={12} sm={6} key={index}>
-                  <TextField
-                    fullWidth
-                    label={label}
-                    variant="outlined"
-                    InputProps={{
-                      endAdornment: (
-                        <IconButton>{/* Icon based on label */}</IconButton>
-                      ),
-                    }}
-                  />
-                </Grid>
-              )
-            )}
+            {["Name", "Email", "Address", "Mobile No"].map((label, index) => (
+              <Grid item xs={12} sm={6} key={index}>
+                <TextField
+                  fullWidth
+                  label={label}
+                  variant="outlined"
+                  value={
+                    label != "Mobile No"
+                      ? values?.[label.toLowerCase()]
+                      : values?.mobileNo
+                  }
+                  InputProps={{
+                    startAdornment: (
+                      <IconButton>{IconToLabelMap[label]}</IconButton>
+                    ),
+                  }}
+                  onChange={(e) => {
+                    setValues({
+                      ...values,
+                      [label.toLowerCase()]: e.target.value,
+                    });
+                  }}
+                />
+              </Grid>
+            ))}
             <Grid item xs={12} sm={6}>
               <Button
                 variant="contained"
                 color="success"
                 fullWidth
                 sx={{ "&:hover": { backgroundColor: "green", color: "white" } }}
+                onClick={() => {
+                  if (avatar != user?.avatar?.url) {
+                    dispatch(updateUserAvatar(avatar));
+                  }
+                  dispatch(updateUserProfile(values));
+                }}
               >
                 Save
               </Button>
@@ -153,6 +209,9 @@ export default function ProfileTabs() {
                 fullWidth
                 sx={{
                   "&:hover": { backgroundColor: "darkred", color: "white" },
+                }}
+                onClick={() => {
+                  setAvatarPreview(user?.avatar?.url);
                 }}
               >
                 Cancel
@@ -220,30 +279,50 @@ export default function ProfileTabs() {
               component: "form",
               onSubmit: (event) => {
                 event.preventDefault();
-                const formData = new FormData(event.currentTarget);
-                const formJson = Object.fromEntries(formData.entries());
-                const email = formJson.email;
-                console.log(email);
+                dispatch(changePassword(passwords));
+                setPasswords({});
                 handleClose();
               },
             }}
           >
             <DialogTitle>Change Password</DialogTitle>
             <DialogContent>
-              {Array.from(["New Password", "Confirm Password"]).map(
-                (label, index) => (
-                  <TextField
-                    autoFocus
-                    required
-                    margin="dense"
-                    id="name"
-                    label={label}
-                    type="password"
-                    fullWidth
-                    variant="outlined"
-                  />
-                )
-              )}
+              {Array.from([
+                "Old Password",
+                "New Password",
+                "Confirm Password",
+              ]).map((label, index) => (
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label={label}
+                  type={show[label] ? "text" : "password"}
+                  fullWidth
+                  variant="outlined"
+                  value={passwords[label.toLowerCase()] || ""}
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton
+                        onClick={() =>
+                          setShow({
+                            ...show,
+                            [label]: !show[label],
+                          })
+                        }
+                      >
+                        {show[label] ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    ),
+                  }}
+                  onChange={(e) => {
+                    setPasswords((prev) => ({
+                      ...prev,
+                      [label.toLowerCase()]: e.target.value,
+                    }));
+                  }}
+                />
+              ))}
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>

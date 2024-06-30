@@ -12,16 +12,28 @@ import ResetPassword from "./components/User/ResetPassword";
 import Cart from "./components/User/Cart";
 import Wishlist from "./components/User/Wishlist";
 import Forum from "./components/Features/Forum";
-import CustomizedSteppers from "./components/Payment/Checkout";
 import ShippingForm from "./components/Payment/ShippingForm";
 import ConfirmOrder from "./components/Payment/ConfirmOrder";
 import Payment from "./components/Payment/Payment";
+import { useDispatch, useSelector } from "react-redux";
+import { clearErrors } from "./features/User/userSlice";
+import { loadUser } from "../Action/User/userAction";
+import React, { useEffect } from "react";
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
   },
 });
+
 function App() {
+  const dispatch = useDispatch();
+  const { error } = useSelector((state) => state.user);
+  useEffect(() => {
+    if (error) {
+      dispatch(clearErrors());
+    }
+    dispatch(loadUser());
+  }, []);
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />

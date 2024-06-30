@@ -16,6 +16,9 @@ import { BrandName } from "../../constants/constants";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { logoutUser } from "../../../Action/User/userAction";
 const pages = ["Home", "Sneakers", "Customize", "Forums"];
 const linkMap = {
   Home: "/",
@@ -33,7 +36,11 @@ function Navbar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-
+  const { isAuthenticated, error, user, loading } = useSelector(
+    (state) => state.user
+  );
+  const dispatch = useDispatch();
+  React.useEffect(() => {}, [isAuthenticated, loading]);
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -162,15 +169,34 @@ function Navbar() {
               <FavoriteIcon />
             </IconButton>
           </Box>
+
           <Box sx={{ flexGrow: 0 }}>
-            <IconButton
-              onClick={() => {
-                window.location.href = "/profile";
-              }}
-              sx={{ p: 0 }}
-            >
-              <Avatar alt="User" src="/static/images/avatar/2.jpg" />
-            </IconButton>
+            {loading ? (
+              <Typography>Loading ...</Typography>
+            ) : isAuthenticated ? (
+              <>
+                <IconButton
+                  onClick={() => {
+                    window.location.href = "/profile";
+                  }}
+                  sx={{ pr: 3 }}
+                >
+                  <Avatar alt="User" src={user?.avatar?.url} />
+                </IconButton>
+                <IconButton onClick={() => dispatch(logoutUser())}>
+                  <LogoutIcon />
+                </IconButton>
+              </>
+            ) : (
+              <Button
+                color="inherit"
+                onClick={() => {
+                  window.location.href = "/login";
+                }}
+              >
+                Login
+              </Button>
+            )}
           </Box>
         </Toolbar>
       </Container>
