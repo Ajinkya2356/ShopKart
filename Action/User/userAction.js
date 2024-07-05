@@ -1,4 +1,10 @@
 import {
+  deleteUserFail,
+  deleteUserRequest,
+  deleteUserSuccess,
+  enableUserFail,
+  enableUserRequest,
+  enableUserSuccess,
   loadUserFail,
   loadUserRequest,
   loadUserSuccess,
@@ -7,6 +13,9 @@ import {
   loginUserSuccess,
   logoutUserRequest,
   logoutUserSuccess,
+  otpMailFail,
+  otpMailRequest,
+  otpMailSuccess,
   registerUserFail,
   registerUserRequest,
   registerUserSuccess,
@@ -132,5 +141,43 @@ export const updateUserProfile = (userData) => async (dispatch) => {
     dispatch(updateUserProfileSuccess(data.user));
   } catch (error) {
     dispatch(updateUserProfileFail(getErrorMessage(error)));
+  }
+};
+export const deleteUser = () => async (dispatch) => {
+  try {
+    dispatch(deleteUserRequest());
+    const { data } = await axios.delete(
+      `http://localhost:4000/api/v1/disable`,
+      defaultHeader
+    );
+    dispatch(deleteUserSuccess(data.user.isActive));
+  } catch (error) {
+    dispatch(deleteUserFail(getErrorMessage(error)));
+  }
+};
+
+export const enableUser = () => async (dispatch) => {
+  try {
+    dispatch(enableUserRequest());
+    const { data } = await axios.get(
+      `http://localhost:4000/api/v1/enable`,
+      defaultHeader
+    );
+    dispatch(enableUserSuccess(data.user.isActive));
+  } catch (error) {
+    dispatch(enableUserFail(getErrorMessage(error)));
+  }
+};
+
+export const sendOTP = () => async (dispatch) => {
+  try {
+    dispatch(otpMailRequest());
+    const { data } = await axios.get(
+      `http://localhost:4000/api/v1/verify`,
+      defaultHeader
+    );
+    dispatch(otpMailSuccess());
+  } catch (error) {
+    dispatch(otpMailFail(getErrorMessage(error)));
   }
 };

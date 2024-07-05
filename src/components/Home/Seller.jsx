@@ -2,8 +2,10 @@ import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import { SellerText } from "../../constants/constants";
 import Sneaker from "../Products/Sneaker";
+import { useSelector } from "react-redux";
 
 const Seller = () => {
+  const {sneakers}=useSelector((state)=>state.sneaker)
   return (
     <Box
       style={{
@@ -37,8 +39,8 @@ const Seller = () => {
           gap: "20px",
         }}
       >
-        {Array.from({ length: 8 }).map((_, index) => {
-          return <Sneaker key={index} />;
+        {sneakers.slice(0,10).map((data, index) => {
+          return <Sneaker key={index} data={data}/>;
         })}
       </Box>
     </Box>

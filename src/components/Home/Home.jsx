@@ -1,5 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./home.module.css";
 import {
   ButtonText,
@@ -16,7 +16,14 @@ import Brand from "./Brand";
 import Seller from "./Seller";
 import Section from "./Section";
 import LastSections from "./LastSections";
+import { useDispatch, useSelector } from "react-redux";
+import { getSneakers } from "../../../Action/Sneaker/sneakerAction";
 const Home = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getSneakers());
+  }, []);
+  const { sneakers } = useSelector((state) => state.sneaker);
   return (
     <>
       <Box className={styles.container}>
@@ -63,9 +70,9 @@ const Home = () => {
               padding: "20px",
             }}
           >
-            <Sneaker />
-            <Sneaker />
-            <Sneaker />
+            {sneakers.slice(0, 3).map((data, index) => {
+              return <Sneaker key={index} data={data} />;
+            })}
           </Box>
         </Box>
       </Box>

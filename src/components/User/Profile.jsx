@@ -13,7 +13,10 @@ const Profile = () => {
       console.log(error);
     }
     if (localStorage.getItem("token") === null) {
-      if (!isAuthenticated) navigate("/login");
+      if (!isAuthenticated) {
+        console.log("Not Authenticated");
+        navigate("/login");
+      }
     }
   }, [isAuthenticated, error, user]);
 

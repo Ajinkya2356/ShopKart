@@ -89,6 +89,38 @@ export const userSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    deleteUserRequest: (state, action) => {
+      state.loading = true;
+    },
+    deleteUserSuccess: (state, action) => {
+      state.loading = false;
+      state.user.isActive = action.payload;
+    },
+    deleteUserFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    enableUserRequest: (state, action) => {
+      state.loading = true;
+    },
+    enableUserSuccess: (state, action) => {
+      state.loading = false;
+      state.user.isActive = action.payload;
+    },
+    enableUserFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    otpMailRequest: (state, action) => {
+      state.loading = true;
+    },
+    otpMailSuccess: (state, action) => {
+      state.loading = false;
+    },
+    otpMailFail: (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    },
     clearErrors: (state, action) => {
       state.error = null;
     },
@@ -116,6 +148,15 @@ export const {
   updateUserProfileRequest,
   updateUserProfileSuccess,
   updateUserProfileFail,
+  deleteUserRequest,
+  deleteUserSuccess,
+  deleteUserFail,
+  enableUserRequest,
+  enableUserSuccess,
+  enableUserFail,
+  otpMailRequest,
+  otpMailSuccess,
+  otpMailFail,
   clearErrors,
 } = userSlice.actions;
 

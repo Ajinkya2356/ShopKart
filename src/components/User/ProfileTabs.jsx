@@ -24,8 +24,13 @@ import { useDispatch, useSelector } from "react-redux";
 import WifiCalling3Icon from "@mui/icons-material/WifiCalling3";
 import HomeIcon from "@mui/icons-material/Home";
 import EmailIcon from "@mui/icons-material/Email";
+import { useNavigate } from "react-router-dom";
 import {
   changePassword,
+  deleteUser,
+  enableUser,
+  logoutUser,
+  sendOTP,
   updateUserAvatar,
   updateUserProfile,
 } from "../../../Action/User/userAction";
@@ -64,6 +69,7 @@ function a11yProps(index) {
 }
 
 export default function ProfileTabs() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(false);
@@ -119,10 +125,11 @@ export default function ProfileTabs() {
           <Grid
             container
             spacing={2}
-            alignItems="center"
-            justifyContent="center"
+            /* alignItems="center" */
+            /* justifyContent="center" */
+            gridAutoFlow="row"
           >
-            <Grid item xs={12} textAlign="center">
+            <Grid item xs={12} sm={6}>
               <input
                 accept="image/*"
                 id="icon-button-file"
@@ -148,8 +155,8 @@ export default function ProfileTabs() {
                 >
                   <Avatar
                     sx={{
-                      height: "100px",
-                      width: "100px",
+                      height: "300px",
+                      width: "300px",
                       m: "auto",
                       "&:hover": {
                         opacity: 0.7,
@@ -161,12 +168,17 @@ export default function ProfileTabs() {
                 </IconButton>
               </label>
             </Grid>
-            {["Name", "Email", "Address", "Mobile No"].map((label, index) => (
-              <Grid item xs={12} sm={6} key={index}>
+
+            <Grid item xs={12} sm={6}>
+              {["Name", "Email", "Address", "Mobile No"].map((label, index) => (
                 <TextField
+                  key={index}
                   fullWidth
                   label={label}
                   variant="outlined"
+                  style={{
+                    marginTop: "20px",
+                  }}
                   value={
                     label != "Mobile No"
                       ? values?.[label.toLowerCase()]
@@ -184,38 +196,50 @@ export default function ProfileTabs() {
                     });
                   }}
                 />
+              ))}
+              <Grid container item xs={12} sm={6} spacing={2}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    margin: "10% 5%",
+                    gap: "10px",
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    color="success"
+                    fullWidth
+                    sx={{
+                      "&:hover": { backgroundColor: "green", color: "white" },
+                    }}
+                    onClick={() => {
+                      if (avatar != user?.avatar?.url) {
+                        dispatch(updateUserAvatar(avatar));
+                      }
+                      dispatch(updateUserProfile(values));
+                    }}
+                  >
+                    Save
+                  </Button>
+
+                  <Button
+                    variant="contained"
+                    color="error"
+                    fullWidth
+                    sx={{
+                      "&:hover": { backgroundColor: "darkred", color: "white" },
+                    }}
+                    onClick={() => {
+                      setAvatarPreview(user?.avatar?.url);
+                      setValues(user);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </Box>
               </Grid>
-            ))}
-            <Grid item xs={12} sm={6}>
-              <Button
-                variant="contained"
-                color="success"
-                fullWidth
-                sx={{ "&:hover": { backgroundColor: "green", color: "white" } }}
-                onClick={() => {
-                  if (avatar != user?.avatar?.url) {
-                    dispatch(updateUserAvatar(avatar));
-                  }
-                  dispatch(updateUserProfile(values));
-                }}
-              >
-                Save
-              </Button>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Button
-                variant="contained"
-                color="error"
-                fullWidth
-                sx={{
-                  "&:hover": { backgroundColor: "darkred", color: "white" },
-                }}
-                onClick={() => {
-                  setAvatarPreview(user?.avatar?.url);
-                }}
-              >
-                Cancel
-              </Button>
             </Grid>
           </Grid>
         </Box>
@@ -248,7 +272,7 @@ export default function ProfileTabs() {
                 Your email is not verified. Click here to verify your email.
               </Typography>
             </Box>
-            <Button>Verify</Button>
+            <Button onClick={() => dispatch(sendOTP())}>Verify</Button>
           </Box>
           <Box
             style={{
@@ -349,7 +373,14 @@ export default function ProfileTabs() {
                 Your account is enabled. Click here to disable your account.
               </Typography>
             </Box>
-            <Button color="error">Disable</Button>
+            <Button
+              color="error"
+              onClick={() =>
+                user?.isActive ? dispatch(deleteUser()) : dispatch(enableUser())
+              }
+            >
+              {user?.isActive ? "Disable" : "Enable"}
+            </Button>
           </Box>
           <Box
             style={{
@@ -366,12 +397,21 @@ export default function ProfileTabs() {
                 gap: "5px",
               }}
             >
-              <Typography variant="h6">Disable Account</Typography>
+              <Typography variant="h6">Delete Account</Typography>
               <Typography variant="body2" color="#A9A9A9">
                 This will delete your account permanently. Click here to delete
               </Typography>
             </Box>
-            <Button color="error">Delete</Button>
+            <Button
+              color="error"
+              onClick={() => {
+                dispatch(deleteUser());
+                dispatch(logoutUser());
+                navigate("/");
+              }}
+            >
+              Delete
+            </Button>
           </Box>
         </Box>
       </CustomTabPanel>

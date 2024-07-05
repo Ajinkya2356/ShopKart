@@ -9,7 +9,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import logo from "../../assets/logo.jpg";
 import { BrandName } from "../../constants/constants";
@@ -183,7 +182,12 @@ function Navbar() {
                 >
                   <Avatar alt="User" src={user?.avatar?.url} />
                 </IconButton>
-                <IconButton onClick={() => dispatch(logoutUser())}>
+                <IconButton
+                  onClick={() => {
+                    dispatch(logoutUser());
+                    navigate("/");
+                  }}
+                >
                   <LogoutIcon />
                 </IconButton>
               </>
