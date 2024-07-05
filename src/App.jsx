@@ -46,7 +46,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/login" element={<Login />} />
           <Route path="/sneakers" element={<Product />} />
-          <Route path="/sneaker" element={<SneakerDetails />} />
+          <Route path="/sneaker/:id" element={<SneakerDetails />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />

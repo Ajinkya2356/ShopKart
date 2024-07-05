@@ -5,6 +5,7 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { Avatar, Rating, Typography } from "@mui/material";
 import FormDialog from "./Review";
+import { useSelector } from "react-redux";
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -36,7 +37,7 @@ function a11yProps(index) {
 
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
-
+  const { sneaker } = useSelector((state) => state.sneaker);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -55,10 +56,7 @@ export default function BasicTabs() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odit similique
-        recusandae voluptas consectetur, cumque delectus? Nemo, possimus!
-        Ratione incidunt, illum numquam, nostrum excepturi temporibus autem
-        dolores voluptas, sequi natus quidem.
+        {sneaker.description}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <Box>
@@ -70,29 +68,32 @@ export default function BasicTabs() {
           >
             <FormDialog />
           </Box>
-          <Box
-            style={{
-              display: "flex",
-              gap: "10px",
-            }}
-          >
-            <Avatar />
-            <Box
-              style={{
-                display: "inherit",
-                flexDirection: "column",
-                gap: "5px",
-              }}
-            >
-              <Rating value={5} />
-              <Typography>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Quibusdam, voluptatum.
-              </Typography>
-              <Typography>Username</Typography>
-              <Typography variant="body2">Date</Typography>
-            </Box>
-          </Box>
+          {sneaker?.reviews.map((review, index) => {
+            return (
+              <Box
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                }}
+              >
+                <Avatar />
+                <Box
+                  style={{
+                    display: "inherit",
+                    flexDirection: "column",
+                    gap: "5px",
+                  }}
+                >
+                  <Rating value={review.rating} />
+                  <Typography>
+                    {review.comment}
+                  </Typography>
+                  <Typography>{review.name}</Typography>
+                  <Typography variant="body2">Date</Typography>
+                </Box>
+              </Box>
+            );
+          })}
         </Box>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>

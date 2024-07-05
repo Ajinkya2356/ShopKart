@@ -6,12 +6,14 @@ import {
   Radio,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import RangeSlider from "./TwoSlider";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import Sneaker from "./Sneaker";
 import MultipleSelectChip from "./MultipleSelect";
+import { useDispatch, useSelector } from "react-redux";
+import { getSneakers } from "../../../Action/Sneaker/sneakerAction";
 const Product = () => {
   const colors = [
     "#ffa500",
@@ -66,6 +68,11 @@ const Product = () => {
     "Price: High to Low",
     "Newest Arrivals",
   ];
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getSneakers());
+  }, []);
+  const { sneakers } = useSelector((state) => state.sneaker);
   return (
     <>
       <Box
@@ -259,8 +266,8 @@ const Product = () => {
             gap: "20px",
           }}
         >
-          {Array.from({ length: 10 }).map((_, index) => {
-            return <Sneaker key={index} />;
+          {sneakers.map((data, index) => {
+            return <Sneaker key={index} data={data} />;
           })}
         </Box>
       </Box>

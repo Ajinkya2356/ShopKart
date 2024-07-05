@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import {
@@ -13,7 +13,9 @@ import shoe from "../../../image/shoe.png";
 import Shoe1 from "../../../image/Shoe1.png";
 import BasicTabs from "./Tabs";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import FormDialog from "./Review";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getSneaker } from "../../../Action/Sneaker/sneakerAction";
 const SneakerDetails = () => {
   const colors = [
     "#ffa500",
@@ -27,6 +29,12 @@ const SneakerDetails = () => {
     "#00ffff",
     "#ff033e",
   ];
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getSneaker(id));
+  }, [id]);
+  const { sneaker } = useSelector((state) => state.sneaker);
   return (
     <Box
       style={{
@@ -58,8 +66,9 @@ const SneakerDetails = () => {
             autoPlay
             showArrows={false}
           >
-            <img src={shoe} />
-            <img src={Shoe1} />
+            {sneaker?.images.map((image, index) => (
+              <img key={index} src={image.url} alt={image.url} />
+            ))}
           </Carousel>
         </Box>
         <Box
@@ -67,7 +76,7 @@ const SneakerDetails = () => {
             padding: "20px",
           }}
         >
-          <BasicTabs />
+          <BasicTabs/>
         </Box>
       </Box>
       <Box
@@ -78,10 +87,12 @@ const SneakerDetails = () => {
           flexDirection: "column",
         }}
       >
-        <Typography variant="h4">Product Name</Typography>
+        <Typography variant="h4">{sneaker?.name}</Typography>
         <Box style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <Rating value={5} readOnly></Rating>{" "}
-          <Typography variant="body2">157 Reviews</Typography>
+          <Rating value={sneaker?.ratings} readOnly></Rating>{" "}
+          <Typography variant="body2">
+            {sneaker?.numOfReviews} Reviews
+          </Typography>
         </Box>
         <Typography
           variant="h5"
@@ -89,7 +100,7 @@ const SneakerDetails = () => {
             fontWeight: "bold",
           }}
         >
-          $200
+          Rs. {sneaker?.price}
         </Typography>
         <Typography
           variant="body1"
@@ -153,9 +164,9 @@ const SneakerDetails = () => {
             fontWeight: "bold",
           }}
         >
-          Stock 
+          Stock
         </Typography>
-        <TextField type="number" />
+        <TextField type="number" value={sneaker?.Stock} />
         <Box
           style={{
             display: "flex",
@@ -171,7 +182,6 @@ const SneakerDetails = () => {
             <FavoriteIcon />
           </IconButton>
         </Box>
-        
       </Box>
     </Box>
   );

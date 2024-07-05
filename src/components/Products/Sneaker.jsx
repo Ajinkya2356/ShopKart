@@ -4,26 +4,23 @@ import styles from "../Home/home.module.css";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useNavigate } from "react-router-dom";
-const Sneaker = () => {
+const Sneaker = ({ data }) => {
   const navigate = useNavigate();
   return (
-    <Box
-      className={styles.sneaker}
-      
-    >
+    <Box className={styles.sneaker}>
       <Box
         style={{
           position: "relative",
           height: "80%",
         }}
         onClick={(e) => {
-          console.log("Clicked")
+          console.log("Clicked");
           e.stopPropagation();
-          navigate("/sneaker");
+          navigate(`/sneaker/${data?._id}`);
         }}
       >
         <img
-          src={`https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8c25lYWtlcnxlbnwwfHwwfHx8MA%3D%3D`}
+          src={data?.images?.[0]?.url}
           style={{
             width: "100%",
             height: "100%",
@@ -42,10 +39,10 @@ const Sneaker = () => {
       </Box>
       <Box className={styles.productDescription}>
         <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-          Sneaker Name
+          {data?.name}
         </Typography>
         <Typography variant="body2" sx={{ opacity: 0.8 }}>
-          Sneaker Price
+          Rs.{data?.price}
         </Typography>
       </Box>
     </Box>
