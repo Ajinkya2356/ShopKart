@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import WifiCalling3Icon from "@mui/icons-material/WifiCalling3";
 import HomeIcon from "@mui/icons-material/Home";
 import EmailIcon from "@mui/icons-material/Email";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   changePassword,
   deleteUser,
@@ -33,7 +33,9 @@ import {
   sendOTP,
   updateUserAvatar,
   updateUserProfile,
+  verifyOTP,
 } from "../../../Action/User/userAction";
+import OTPInput from "./OTP";
 const recentActivities = [
   { description: "Logged in from a new device", date: "2023-04-01" },
   { description: "Updated profile picture", date: "2023-04-02" },
@@ -73,9 +75,11 @@ export default function ProfileTabs() {
   const dispatch = useDispatch();
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(false);
+  const [verify, setVerify] = React.useState(false);
   const { user, error } = useSelector((state) => state.user);
   const [values, setValues] = React.useState(user);
   const [passwords, setPasswords] = React.useState({});
+  const [otp, setOTP] = React.useState("");
   const [show, setShow] = React.useState({
     "Old Password": false,
     "New Password": false,
@@ -272,8 +276,61 @@ export default function ProfileTabs() {
                 Your email is not verified. Click here to verify your email.
               </Typography>
             </Box>
-            <Button onClick={() => dispatch(sendOTP())}>Verify</Button>
+            <Button
+              disabled={user?.verifyEmail}
+              onClick={() => {
+                setVerify(true);
+                dispatch(sendOTP());
+              }}
+            >
+              Verify
+            </Button>
           </Box>
+          <Dialog
+            open={verify}
+            onClose={() => setVerify(false)}
+            PaperProps={{
+              component: "form",
+              onSubmit: (event) => {
+                event.preventDefault();
+                dispatch(verifyOTP(otp));
+                setOTP("");
+                setVerify(false);
+              },
+            }}
+          >
+            <DialogTitle>Email Verification</DialogTitle>
+            <DialogContent
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+              }}
+            >
+              <OTPInput setOTP={setOTP} otp={otp} />
+              <Link
+                onClick={() => {
+                  dispatch(sendOTP());
+                }}
+                style={{
+                  alignSelf: "flex-end",
+                }}
+              >
+                <Typography
+                  style={{
+                    color: "white",
+                    textDecoration: "underline",
+                  }}
+                >
+                  Resend OTP
+                </Typography>
+              </Link>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setVerify(false)}>Cancel</Button>
+              <Button type="submit">Verify</Button>
+            </DialogActions>
+          </Dialog>
           <Box
             style={{
               display: "inherit",

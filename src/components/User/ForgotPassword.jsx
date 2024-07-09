@@ -1,8 +1,11 @@
 import React from "react";
 import { Box, TextField, Typography, Button, Avatar } from "@mui/material";
-import { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { forgotPassword } from "../../../Action/User/userAction";
 const ForgotPassword = () => {
+  const [email, setEmail] = useState("");
+  const dispatch = useDispatch();
   return (
     <Box
       style={{
@@ -10,7 +13,7 @@ const ForgotPassword = () => {
         justifyContent: "center",
         alignItems: "center",
         minHeight: "100vh",
-       /*  border: "2px solid red", */
+        /*  border: "2px solid red", */
         flexDirection: "column",
       }}
     >
@@ -38,10 +41,24 @@ const ForgotPassword = () => {
           }}
         >
           {Array.from(["Email"]).map((item, index) => {
-            return <TextField label={item} fullWidth key={index} />;
+            return (
+              <TextField
+                label={item}
+                fullWidth
+                key={index}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            );
           })}
-          
-          <Button variant="contained">Submit</Button>
+
+          <Button
+            variant="contained"
+            onClick={() => {
+              dispatch(forgotPassword(email));
+            }}
+          >
+            Submit
+          </Button>
         </Box>
       </Box>
     </Box>

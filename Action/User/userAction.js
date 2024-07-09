@@ -28,6 +28,8 @@ import {
   updateUserProfileFail,
   updateUserProfileRequest,
   updateUserProfileSuccess,
+  forgotPasswordFail,
+  resetPasswordFail,
 } from "../../src/features/User/userSlice";
 import axios from "axios";
 const defaultHeader = {
@@ -173,11 +175,51 @@ export const sendOTP = () => async (dispatch) => {
   try {
     dispatch(otpMailRequest());
     const { data } = await axios.get(
-      `http://localhost:4000/api/v1/verify`,
+      `http://localhost:4000/api/v1/otp`,
       defaultHeader
     );
     dispatch(otpMailSuccess());
   } catch (error) {
     dispatch(otpMailFail(getErrorMessage(error)));
+  }
+};
+
+export const verifyOTP = (otp) => async (dispatch) => {
+  try {
+    dispatch(otpMailRequest());
+    const { data } = await axios.post(
+      `http://localhost:4000/api/v1/verify`,
+      { otp },
+      defaultHeader
+    );
+    console.log(data);
+    dispatch(otpMailSuccess());
+  } catch (error) {
+    dispatch(otpMailFail(getErrorMessage(error)));
+  }
+};
+
+export const forgotPassword = (email) => async (dispatch) => {
+  try {
+    await axios.post(
+      `http://localhost:4000/api/v1/password/forgot`,
+      { email },
+      defaultHeader
+    );
+  } catch (error) {
+    dispatch(forgotPasswordFail(getErrorMessage(error)));
+  }
+};
+
+export const resetPassword = (userData, token) => async (dispatch) => {
+  try {
+    await axios.put(
+      `http://localhost:4000/api/v1/password/reset/${token}`,
+      { ...userData },
+      defaultHeader
+    );
+    dispatch(loadUser());
+  } catch (error) {
+    dispatch(resetPasswordFail(getErrorMessage(error)));
   }
 };

@@ -121,6 +121,12 @@ export const userSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
+    forgotPasswordFail:(state,action)=>{
+      state.error=action.payload;
+    },
+    resetPasswordFail:(state,action)=>{
+      state.error=action.payload;
+    },
     clearErrors: (state, action) => {
       state.error = null;
     },
@@ -157,6 +163,8 @@ export const {
   otpMailRequest,
   otpMailSuccess,
   otpMailFail,
+  forgotPasswordFail,
+  resetPasswordFail,
   clearErrors,
 } = userSlice.actions;
 

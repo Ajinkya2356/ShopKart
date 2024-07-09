@@ -1,9 +1,13 @@
 import React from "react";
 import { Box, TextField, Typography, Button, Avatar } from "@mui/material";
-import { useRef, useState } from "react";
-import { Link } from "react-router-dom";
-
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { resetPassword } from "../../../Action/User/userAction";
+import { useParams } from "react-router-dom";
 const ResetPassword = () => {
+  const [userData, setUserData] = useState({});
+  const dispatch = useDispatch();
+  const { id } = useParams();
   return (
     <Box
       style={{
@@ -40,11 +44,31 @@ const ResetPassword = () => {
         >
           {Array.from(["New Password", "Confirm Password"]).map(
             (item, index) => {
-              return <TextField label={item} fullWidth key={index} />;
+              return (
+                <TextField
+                  label={item}
+                  fullWidth
+                  key={index}
+                  onChange={(e) => {
+                    setUserData((prev) => ({
+                      ...prev,
+                      [item]: e.target.value,
+                    }));
+                  }}
+                />
+              );
             }
           )}
 
-          <Button variant="contained">Change Password</Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              console.log("Click");
+              dispatch(resetPassword(userData, id));
+            }}
+          >
+            Change Password
+          </Button>
         </Box>
       </Box>
     </Box>
