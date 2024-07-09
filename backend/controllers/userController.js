@@ -6,6 +6,7 @@ const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary");
 const jwt = require("jsonwebtoken");
+const { activityRegister } = require("./activityController");
 // register user
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
   const { name, email, password, avatar, mobile_no, address } = req.body;
@@ -51,6 +52,7 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   if (!isPasswordMatched) {
     return next(new ErrorHandler("Invalid Email or Password"), 401);
   }
+
   sendToken(user, 201, res);
 });
 
@@ -106,7 +108,7 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
     resetPasswordToken,
     resetPasswordExpire: { $gt: Date.now() },
   });
-  console.log(req.body)
+  console.log(req.body);
   if (!user || user.resetPasswordToken !== resetPasswordToken) {
     return next(
       new ErrorHandler("Reset Password Token is invalid or has expired.", 400)

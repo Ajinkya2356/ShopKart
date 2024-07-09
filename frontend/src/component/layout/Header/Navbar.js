@@ -11,11 +11,10 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import Logo from "../../../images/images.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../../../actions/userAction";
+import { logoutUser } from "../../../actions/userAction";
 const pages = ["Home", "Products", "Contact", "Chat"];
 const settings = ["Orders", "Profile", "Cart", "Logout"];
 const LinkMap = {
@@ -85,7 +84,7 @@ function ResponsiveAppBar() {
             sx={{
               fontFamily: "'Montserrat', sans-serif",
               ml: 2,
-              mr:2,
+              mr: 2,
               display: { xs: "none", md: "flex" },
               fontWeight: 700,
               color: "black",
@@ -145,7 +144,7 @@ function ResponsiveAppBar() {
             component="a"
             href="/"
             sx={{
-              mr:2,
+              mr: 2,
               display: { xs: "flex", md: "none" },
               flexGrow: 1,
               fontFamily: "'Montserrat', sans-serif",
@@ -203,7 +202,7 @@ function ResponsiveAppBar() {
                     if (setting != "Logout") {
                       navigate(LinkMap[setting]);
                     } else {
-                      dispatch(logout());
+                      dispatch(logoutUser());
                     }
                   }}
                 >
