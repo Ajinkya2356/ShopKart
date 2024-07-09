@@ -21,6 +21,7 @@ import {
   VisibilityOff,
 } from "@mui/icons-material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { registerActivity } from "../../../Action/Activity/activityAction";
 const Login = () => {
   const [activeTab, setActiveTab] = useState(0);
   const fileInputRef = useRef(null);

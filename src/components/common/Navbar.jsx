@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { logoutUser } from "../../../Action/User/userAction";
+import { registerActivity } from "../../../Action/Activity/activityAction";
 const pages = ["Home", "Sneakers", "Customize", "Forums"];
 const linkMap = {
   Home: "/",
@@ -185,6 +186,7 @@ function Navbar() {
                 <IconButton
                   onClick={() => {
                     dispatch(logoutUser());
+                    dispatch(registerActivity({ activity: "Logout" }));
                     navigate("/");
                   }}
                 >
