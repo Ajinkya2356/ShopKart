@@ -13,13 +13,15 @@ const {
   updateUserRole,
   deleteUser,
   updateUserAvatar,
+  enableUser,
 } = require("../controllers/userController");
 const sendEmail = require("../utils/sendEmail");
 const { isAuthenticatedUser, authorizedRoles } = require("../middleWare/auth");
 const router = express.Router();
 const multer = require("multer");
+const { generateOTP, verifyOTP } = require("../controllers/otpController");
 const upload = multer();
-router.route("/register").post(upload.single("avatar"), registerUser);
+router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
 router.route("/password/forgot").post(forgotPassword);
 router.route("/password/reset/:token").put(resetPassword);
@@ -36,6 +38,9 @@ router
 router
   .route("/admin/user/:id")
   .get(isAuthenticatedUser, authorizedRoles("admin"), getSingleUser)
-  .put(isAuthenticatedUser, authorizedRoles("admin"), updateUserRole)
-  .delete(isAuthenticatedUser, authorizedRoles("admin"), deleteUser);
+  .put(isAuthenticatedUser, authorizedRoles("admin"), updateUserRole);
+router.route("/disable").delete(isAuthenticatedUser, deleteUser);
+router.route("/enable").get(isAuthenticatedUser, enableUser);
+router.route("/otp").get(isAuthenticatedUser, generateOTP);
+router.route("/verify").post(isAuthenticatedUser, verifyOTP);
 module.exports = router;
