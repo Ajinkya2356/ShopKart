@@ -37,22 +37,24 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
-  const resultPerPage = 8;
+  const resultPerPage = 3;
   const productsCount = await Product.countDocuments();
   const apiFeature = new ApiFeatures(Product.find(), req.query)
     .search()
     .filter()
-    .pagination(resultPerPage);
-
+    .filterByPrice()
+    .filterByCategory();
+  let filteredProductsCount = await Product.countDocuments(apiFeature.query);
+  apiFeature.pagination(resultPerPage);
   let products = await apiFeature.query;
-  let filteredProductsCount = products.length;
-
+  const totalPage = Math.ceil(filteredProductsCount / resultPerPage);
   res.status(200).json({
     success: true,
     products,
     productsCount,
     resultPerPage,
     filteredProductsCount,
+    totalPage,
   });
 });
 exports.getAdminProducts = catchAsyncErrors(async (req, res) => {
